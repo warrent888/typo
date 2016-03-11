@@ -16,7 +16,7 @@ class ContentController < ApplicationController
     end
   end
   
-  def merge_articles
+  def merge
     if current_user.admin?
       item = Article.find(params[:id])
       otherId = params[:merge]

@@ -412,19 +412,21 @@ class Article < Content
     self.categorizations.build(:category => category, :is_primary => is_primary)
   end
   
-  def merge_with(article_id)
-    article = Article.find(article_id)
-    self.body = self.body + article.body
+  def merge
+    render :status => :unauthorized and return unless current_user.admin?
 
-    article.comments.each do |comment|
-      comment.article = self
-      comment.save!
+    article = Article.find(params[:id])
+
+    other_article = params[:merge_with]
+    begin
+      Article.find(other_article)
+    rescue
+      raise ActiveRecord::RecordNotFound and return
     end
 
-    article.destroy
+    new_article = article.merge_with(other_article)
 
-    self.save!
-    return self
+    redirect_to "/admin/content"
   end
 
   def access_by?(user)
