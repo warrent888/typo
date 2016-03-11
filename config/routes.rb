@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   match 'articles.:format', :to => 'articles#index', :constraints => {:format => 'rss'}, :as => 'rss'
   match 'articles.:format', :to => 'articles#index', :constraints => {:format => 'atom'}, :as => 'atom'
+  match "admin/content/merge_articles/:id", :to => "content#merge_articles", :as => 'edit_path'
 
   scope :controller => 'xml', :path => 'xml', :as => 'xml' do
     match 'articlerss/:id/feed.xml', :action => 'articlerss', :format => false

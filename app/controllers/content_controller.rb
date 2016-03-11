@@ -15,6 +15,21 @@ class ContentController < ApplicationController
        end
     end
   end
+  
+  def merge_articles
+    if current_user.admin?
+      item = Article.find(params[:id])
+      otherId = params[:merge]
+      if true
+    # 	if (item.merge(Article.where(:id => otherId)))
+           flash[:notice] = _("Article #{params[:merge]} was successfully merged with #{params[:id]}")
+      	   redirect_to(:back)
+    	else
+      	   flash[:error] = _('Article merging failed.')
+      	   redirect_to(:back)
+        end
+    end
+  end
 
   include LoginSystem
   before_filter :setup_themer
