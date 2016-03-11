@@ -31,6 +31,7 @@
 <h1><%= _("Merge Articles")%></h1>
 <%= form_tag("/admin/content/edit") do %>
   <%= label_tag(:merge_with, "Article ID") %>
+  <%= text_field_tag(:merge_with) %>
   <%= submit_tag("Merge") %>
 <% end %>
 
