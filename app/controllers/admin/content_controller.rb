@@ -36,6 +36,23 @@ class Admin::ContentController < Admin::BaseController
     end
     new_or_edit
   end
+  
+  def merge
+    render :status => :unauthorized and return unless current_user.admin?
+
+    article = Article.find(params[:id])
+
+    other_article = params[:merge_with]
+    begin
+      Article.find(other_article)
+    rescue
+      raise ActiveRecord::RecordNotFound and return
+    end
+
+    new_article = article.merge_with(other_article)
+
+    redirect_to "/admin/content"
+  end
 
   def destroy
     @record = Article.find(params[:id])
@@ -241,11 +258,5 @@ class Admin::ContentController < Admin::BaseController
     @resources = Resource.by_created_at
   end
   
-  def merge
-    article = Article.find(params[:id])
-    other_article = params[:merge_with]
-    new_article = article.merge_with(other_article)
- 
-    redirect_to "/admin/content/edit/#{new_article.id}"
-  end
+
 end
